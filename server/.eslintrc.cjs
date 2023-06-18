@@ -31,5 +31,11 @@ module.exports = {
       { ignores: ['modules'] },
     ],
     'no-console': 'off',
+    'import/extensions': [
+      'error',
+      {
+        js: 'ignorePackages',
+      },
+    ],
   },
 };

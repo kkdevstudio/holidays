@@ -1,18 +1,18 @@
 import express from 'express';
+import Event from '../models/event.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+export const getEvents = async (req, res) => {
+  const events = await Event.find({});
+
   try {
-    const result = await fetch(
-      'https://date.nager.at/api/v3/AvailableCountries'
-    );
-    const json = await result.json();
-    res.status(200).send(json);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error.message);
+    res.status(200).json(events);
+  } catch (err) {
+    // handleError(err, res);
   }
-});
+};
+
+router.route('/').get(getEvents);
 
 export default router;

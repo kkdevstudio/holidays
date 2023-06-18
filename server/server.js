@@ -1,17 +1,17 @@
-// server/index.js
+import fs from 'fs';
+import dotenv from 'dotenv';
 import https from 'https';
 import express from 'express';
-import fs from 'fs';
+import connectMongo from './data/db/mongoDB_connection.js';
+import routers from './routes/router.js';
 
-const PORT = process.env.PORT || 3000;
+dotenv.config();
 
 const app = express();
+connectMongo();
 
 app.use(express.json());
-
-app.get('/api', (req, res) => {
-  res.json({ message: 'Hello from server!' });
-});
+app.use('/', routers);
 
 https
   .get('https://date.nager.at/api/v3/AvailableCountries', (res) => {
@@ -36,6 +36,6 @@ let data = fs.readFileSync('./data/available_country_data.json');
 data = JSON.parse(data);
 console.log(data);
 
-app.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server listening on http://localhost:${process.env.PORT}`);
 });
